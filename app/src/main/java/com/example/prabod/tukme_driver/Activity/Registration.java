@@ -9,9 +9,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -22,11 +19,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.tuktuk.dmth.tuktuk.Database.DatabaseHandler;
-import com.tuktuk.dmth.tuktuk.NetServiceinterface;
-import com.tuktuk.dmth.tuktuk.R;
-import com.tuktuk.dmth.tuktuk.Service.NetService;
-import com.tuktuk.dmth.tuktuk.Utils.MetaData;
+import com.example.prabod.tukme_driver.Database.DatabaseHandler;
+import com.example.prabod.tukme_driver.R;
+import com.example.prabod.tukme_driver.Service.NetService;
+import com.example.prabod.tukme_driver.Utils.MetaData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,19 +39,19 @@ public class Registration extends AppCompatActivity {
 
     ProgressDialog dialog;
 
-    NetServiceinterface mService;
+    //NetServiceinterface mService;
     DatabaseHandler db;
     private ServiceConnection serviceConnection=new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mService= NetServiceinterface.Stub.asInterface(service);
+            //mService= NetServiceinterface.Stub.asInterface(service);
             isBound=true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mService=null;
+            //mService=null;
             isBound=false;
         }
     };
@@ -64,11 +60,11 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //ToDo set the +94 mark take automatically.
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        nextbtn_registration = (Button) findViewById(R.id.next_button_reg);
-        mobileNo_registration_input = (EditText) findViewById(R.id.mobileno_register_edittext);
+        //setContentView(R.layout.activity_registration);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+       // nextbtn_registration = (Button) findViewById(R.id.next_button_reg);
+        //mobileNo_registration_input = (EditText) findViewById(R.id.mobileno_register_edittext);
 
         Datarceiver=new DataReceiver();
         db=new DatabaseHandler(getApplicationContext());
@@ -106,27 +102,27 @@ public class Registration extends AppCompatActivity {
                 HashMap<String, String> inpmessage = new HashMap<String, String>();
 
                 inpmessage.put("phone1",mobileNo_registration_input.getText().toString());
-                try {
+               /* try {
                     if (mService == null) {
                         Log.e("mService","mService register is null");
                     }
-                    mService.sendNetworkData(inpmessage, MetaData.registerKey);
+                   mService.sendNetworkData(inpmessage, MetaData.registerKey);
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                }
+                } */
 
             }
         });
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       // fab.setOnClickListener(new View.OnClickListener() {
+       //     @Override
+        //    public void onClick(View view) {
+        //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //                .setAction("Action", null).show();
+       //     }
+       // });
 
         bindServicetoActivity();
         registerReceiver(Datarceiver, new IntentFilter("tukme.tcpdirectcall.result"));
@@ -164,14 +160,14 @@ public class Registration extends AppCompatActivity {
             int errorcode=intent.getIntExtra("status", -1);
             if(errorcode== MetaData.MSG_Done){
 
-                Intent pincodeverifyactivityintent = new Intent(Registration.this, PinCodeVerifyActivity.class);
-                pincodeverifyactivityintent.putExtra("phone1", mobileNo_registration_input.getText().toString());
+                //Intent pincodeverifyactivityintent = new Intent(Registration.this, PinCodeVerifyActivity.class);
+               // pincodeverifyactivityintent.putExtra("phone1", mobileNo_registration_input.getText().toString());
 
                 try {
                     JSONObject rep=new JSONObject(intent.getStringExtra("result"));
                     db.updateMetadata("lastauthcode", rep.getString("authenticateCode"));
                     db.updateMetadata("userid",rep.getString("userID"));
-                    startActivity(pincodeverifyactivityintent);
+                  //  startActivity(pincodeverifyactivityintent);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

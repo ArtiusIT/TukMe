@@ -7,7 +7,7 @@ import com.example.prabod.tukme_driver.Database.DatabaseHandler;
  */
 public class User {
     String uname;
-    boolean isloggedin;
+    boolean isOnline;
     boolean islocked;
 
     public User(DatabaseHandler db) {
